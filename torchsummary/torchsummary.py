@@ -6,7 +6,7 @@ from collections import OrderedDict
 import numpy as np
 
 
-def summary(model, input_size, batch_size=-1, device="cuda"):
+def get_summary(model, input_size, batch_size=-1, device="cuda"):
 
     def register_hook(module):
 
@@ -75,6 +75,11 @@ def summary(model, input_size, batch_size=-1, device="cuda"):
     for h in hooks:
         h.remove()
 
+    return summary
+
+
+def summary(model, input_size, batch_size=-1, device="cuda"):
+    summary = get_summary(model, input_size, batch_size, device)
     print("----------------------------------------------------------------")
     line_new = "{:>20}  {:>25} {:>15}".format("Layer (type)", "Output Shape", "Param #")
     print(line_new)
@@ -113,3 +118,9 @@ def summary(model, input_size, batch_size=-1, device="cuda"):
     print("Estimated Total Size (MB): %0.2f" % total_size)
     print("----------------------------------------------------------------")
     # return summary
+
+
+def infer_output_shape(model, input_size, batch_size=-1, device='cuda'):
+    summary = get_summary(model, input_size, batch_size=batch_size, device=device)
+    last_layer_name = list(summary.keys())[-1]
+    return summary[last_layer_name]
