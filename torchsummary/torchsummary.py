@@ -123,4 +123,4 @@ def summary(model, input_size, batch_size=-1, device="cuda"):
 def infer_output_shape(model, input_size, batch_size=-1, device='cuda'):
     summary = get_summary(model, input_size, batch_size=batch_size, device=device)
     last_layer_name = list(summary.keys())[-1]
-    return summary[last_layer_name]
+    return summary[last_layer_name]['output_shape']
